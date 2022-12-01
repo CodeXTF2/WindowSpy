@@ -1,4 +1,4 @@
-# WindowSpy
+# WindowSpy 👀
 
 WindowSpy is a Cobalt Strike Beacon Object File meant for targetted user surveillance. The goal of this project was to trigger surveillance capabilities only on certain targets, e.g. browser login pages, confidential documents, vpn logins etc. The purpose was to increase stealth during user surveillance by preventing detection of repeated use of surveillance capabilities e.g. screenshots. It also saves the red team time in sifting through many pages of user surveillance data, which would be produced if keylogging/screenwatch was running at all times.
 
