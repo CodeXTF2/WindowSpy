@@ -23,4 +23,4 @@ The spy() function has 1 argument, $1 being the beacon id of the beacon that tri
 I built this because I was bored, and was messing with user surveillance. If there are bugs, open an issue. If there are any issues with the design, feel free to open an issue too.
 
 ## Disclaimer
-This tool is to be used for malicious purposes. I am not responsible for any education that results from incorrect or non malicious use. It is YOUR responsibility to ensure that the tool is not used in accordance with the law.
+usual disclaimer here, I am not responsible for any crimes against humanity you may commit or nuclear war you may cause using this piece of poorly written code.
