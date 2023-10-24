@@ -20,7 +20,8 @@ DECLSPEC_IMPORT WINUSERAPI BOOL WINAPI USER32$IsWindowVisible(HWND);
 #define IsWindowVisible USER32$IsWindowVisible
 DECLSPEC_IMPORT WINUSERAPI int WINAPI USER32$GetWindowTextA(HWND, LPSTR, int);
 #define GetWindowTextA USER32$GetWindowTextA
-
+#define strtok MSVCRT$strtok
+#define strcpy MSVCRT$strcpy
 
 /* COM */
 DECLSPEC_IMPORT HRESULT  WINAPI   OLE32$CLSIDFromString(LPCWSTR, LPCLSID);
@@ -106,7 +107,8 @@ DECLSPEC_IMPORT LPSTR WINAPI	Kernel32$lstrcatA(LPSTR lpString1, LPCSTR lpString2
 DECLSPEC_IMPORT LPSTR WINAPI	Kernel32$lstrcpynA(LPSTR lpString1, LPCSTR lpString2, int iMaxLength);
 DECLSPEC_IMPORT int WINAPI		KERNEL32$lstrlenW(LPCWSTR lpString);
 DECLSPEC_IMPORT LPWSTR WINAPI	KERNEL32$lstrcpyW(LPWSTR lpString1, LPCWSTR lpString2);
-
+DECLSPEC_IMPORT char* __cdecl 	MSVCRT$strtok(char* str, const char* delim);
+DECLSPEC_IMPORT char* __cdecl 	MSVCRT$strcpy(char* dest, const char* src);
 
 /* RPC */
 DECLSPEC_IMPORT RPC_STATUS RPC_ENTRY Rpcrt4$RpcStringFreeA(RPC_CSTR* String);
@@ -236,6 +238,7 @@ DECLSPEC_IMPORT BOOL WINAPI ADVAPI32$GetUserNameW(LPWSTR lpBuffer, LPDWORD pcbBu
 #define lstrlenW				KERNEL32$lstrlenW
 #define lstrcpyW				KERNEL32$lstrcpyW
 #define sprintf					MSVCRT$sprintf
+#define sprintf	                MSVCRT$strtok
 
 
 /* RPC */

