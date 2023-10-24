@@ -11,6 +11,7 @@ The spy() function has 1 argument, $1 being the beacon id of the beacon that tri
 
 # Installation
 1. load the WindowSpy.cna script into Cobalt Strike
+2. Update your keywords e.g. windowspy_update confidential,secret,password
 
 # Building from source
 1. open the WindowSpy.sln solution file in Visual Studio
